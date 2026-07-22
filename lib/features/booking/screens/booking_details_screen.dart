@@ -18,6 +18,7 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 import '../../../core/enums/trip_type.dart';
+import '../../../core/services/whatsapp_service.dart';
 import '../models/booking_model.dart';
 import '../provider/booking_provider.dart';
 import '../widgets/booking_action_bar.dart';
@@ -105,16 +106,14 @@ content: Text(
 Navigator.pop(context, true);
 }
 
-void _shareBooking(
-BuildContext context,
-) {
-ScaffoldMessenger.of(context).showSnackBar(
-const SnackBar(
-content: Text(
-'WhatsApp sharing coming next.',
-),
-),
-);
+Future<void> _shareBooking(
+    BuildContext context,
+    ) async {
+  await WhatsAppService.shareBooking(
+    context,
+    booking,
+    supportNumber: '9343833008',
+  );
 }
 
 @override
