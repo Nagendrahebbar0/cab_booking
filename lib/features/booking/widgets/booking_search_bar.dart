@@ -2,7 +2,7 @@
 // File        : booking_search_bar.dart
 // Project     : Cab Booking Manager
 // Description :
-// Reusable booking search bar.
+// Reusable search bar for bookings.
 // *****************************************************************************
 
 import 'package:flutter/material.dart';
@@ -12,12 +12,10 @@ class BookingSearchBar extends StatefulWidget {
     super.key,
     required this.controller,
     required this.onChanged,
-    required this.onClear,
   });
 
   final TextEditingController controller;
   final ValueChanged<String> onChanged;
-  final VoidCallback onClear;
 
   @override
   State<BookingSearchBar> createState() =>
@@ -29,7 +27,6 @@ class _BookingSearchBarState
   @override
   void initState() {
     super.initState();
-
     widget.controller.addListener(_refresh);
   }
 
@@ -48,19 +45,24 @@ class _BookingSearchBarState
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.fromLTRB(12, 12, 12, 8),
+      padding: const EdgeInsets.all(12),
       child: TextField(
         controller: widget.controller,
         onChanged: widget.onChanged,
         decoration: InputDecoration(
-          hintText: 'Search by Booking ID, Name or Phone',
+          hintText: 'Search Booking...',
           prefixIcon: const Icon(Icons.search),
+
           suffixIcon: widget.controller.text.isEmpty
               ? null
               : IconButton(
             icon: const Icon(Icons.clear),
-            onPressed: widget.onClear,
+            onPressed: () {
+              widget.controller.clear();
+              widget.onChanged('');
+            },
           ),
+
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(12),
           ),
