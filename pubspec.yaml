@@ -13,7 +13,9 @@ dependencies:
     sdk: flutter
   url_launcher: ^6.3.2
   cupertino_icons: ^1.0.8
-
+  pdf: ^3.11.3
+  printing: ^5.14.2
+  excel: ^4.0.6
   # State Management
   provider: ^6.1.5+1
 
@@ -29,10 +31,10 @@ dependencies:
   # Local Settings (will be removed later if no longer required)
   shared_preferences: ^2.5.5
 
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
-
   flutter_lints: ^6.0.0
 
 flutter:

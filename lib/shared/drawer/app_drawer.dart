@@ -10,11 +10,14 @@ import 'package:flutter/material.dart';
 import '../../core/constants/app_strings.dart';
 import '../../features/booking/screens/booking_screen.dart';
 import '../../features/dashboard/dashboard_screen.dart';
+import '../../features/reports/screens/reports_screen.dart';
 
 /// Common navigation drawer.
 class AppDrawer extends StatelessWidget {
   /// Creates the application drawer.
-  const AppDrawer({super.key});
+  const AppDrawer({
+    super.key,
+  });
 
   void _navigate(
       BuildContext context,
@@ -53,9 +56,17 @@ class AppDrawer extends StatelessWidget {
             ),
           ),
 
+          //--------------------------------------------------------------------
+          // Dashboard
+          //--------------------------------------------------------------------
+
           ListTile(
-            leading: const Icon(Icons.dashboard_outlined),
-            title: const Text(AppStrings.dashboard),
+            leading: const Icon(
+              Icons.dashboard_outlined,
+            ),
+            title: const Text(
+              AppStrings.dashboard,
+            ),
             onTap: () {
               _navigate(
                 context,
@@ -64,9 +75,17 @@ class AppDrawer extends StatelessWidget {
             },
           ),
 
+          //--------------------------------------------------------------------
+          // Bookings
+          //--------------------------------------------------------------------
+
           ListTile(
-            leading: const Icon(Icons.book_online_outlined),
-            title: const Text(AppStrings.bookings),
+            leading: const Icon(
+              Icons.book_online_outlined,
+            ),
+            title: const Text(
+              AppStrings.bookings,
+            ),
             onTap: () {
               _navigate(
                 context,
@@ -75,21 +94,66 @@ class AppDrawer extends StatelessWidget {
             },
           ),
 
-          const ListTile(
-            leading: Icon(Icons.settings_outlined),
-            title: Text(AppStrings.settings),
-          ),
+          //--------------------------------------------------------------------
+          // Reports
+          //--------------------------------------------------------------------
 
-          const ListTile(
-            leading: Icon(Icons.info_outline),
-            title: Text(AppStrings.about),
+          ListTile(
+            leading: const Icon(
+              Icons.assessment_outlined,
+            ),
+            title: const Text(
+              'Reports',
+            ),
+            onTap: () {
+              _navigate(
+                context,
+                const ReportsScreen(),
+              );
+            },
           ),
 
           const Divider(),
 
+          //--------------------------------------------------------------------
+          // Settings
+          //--------------------------------------------------------------------
+
           const ListTile(
-            leading: Icon(Icons.logout),
-            title: Text(AppStrings.logout),
+            leading: Icon(
+              Icons.settings_outlined,
+            ),
+            title: Text(
+              AppStrings.settings,
+            ),
+          ),
+
+          //--------------------------------------------------------------------
+          // About
+          //--------------------------------------------------------------------
+
+          const ListTile(
+            leading: Icon(
+              Icons.info_outline,
+            ),
+            title: Text(
+              AppStrings.about,
+            ),
+          ),
+
+          const Divider(),
+
+          //--------------------------------------------------------------------
+          // Logout
+          //--------------------------------------------------------------------
+
+          const ListTile(
+            leading: Icon(
+              Icons.logout,
+            ),
+            title: Text(
+              AppStrings.logout,
+            ),
           ),
         ],
       ),

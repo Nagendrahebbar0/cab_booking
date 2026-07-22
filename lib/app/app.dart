@@ -25,6 +25,9 @@ import '../features/dashboard/dashboard_screen.dart';
 import '../features/dashboard/provider/dashboard_provider.dart';
 import '../features/dashboard/repository/dashboard_repository.dart';
 
+import '../features/reports/provider/report_provider.dart';
+import '../features/reports/repository/report_repository.dart';
+
 import 'app_theme.dart';
 
 /// Root widget of the Cab Booking Manager application.
@@ -53,6 +56,18 @@ class CabBookingManagerApp extends StatelessWidget {
         ChangeNotifierProvider<DashboardProvider>(
           create: (_) => DashboardProvider(
             dashboardRepository: DashboardRepository(
+              bookingRepository: BookingRepository.instance,
+            ),
+          ),
+        ),
+
+        //----------------------------------------------------------------------
+        // Report Provider
+        //----------------------------------------------------------------------
+
+        ChangeNotifierProvider<ReportProvider>(
+          create: (_) => ReportProvider(
+            reportRepository: ReportRepository(
               bookingRepository: BookingRepository.instance,
             ),
           ),
