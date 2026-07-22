@@ -13,19 +13,20 @@
 // Author      : H S Nagendra Hebbar & OpenAI ChatGPT
 // *****************************************************************************
 
-import 'package:cab_booking_manager/features/dashboard/provider/dashboard_provider.dart';
-import 'package:cab_booking_manager/features/dashboard/widgets/dashboard_stat_card.dart';
-import 'package:cab_booking_manager/features/dashboard/widgets/quick_action_card.dart';
-import 'package:cab_booking_manager/features/dashboard/widgets/recent_booking_tile.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../../core/constants/app_sizes.dart';
 import '../../../core/constants/app_strings.dart';
 import '../../../shared/drawer/app_drawer.dart';
+
 import '../booking/screens/booking_details_screen.dart';
 import '../booking/screens/booking_screen.dart';
-
+import '../booking/models/booking_model.dart';
+import 'provider/dashboard_provider.dart';
+import 'widgets/dashboard_stat_card.dart';
+import 'widgets/quick_action_card.dart';
+import 'widgets/recent_booking_tile.dart';
 
 class DashboardScreen extends StatefulWidget {
   const DashboardScreen({
@@ -45,12 +46,58 @@ void initState() {
 super.initState();
 
 WidgetsBinding.instance.addPostFrameCallback((_) {
+_refreshDashboard();
+});
+}
+
+Future<void> _refreshDashboard() async {
 if (!mounted) return;
 
-context
+await context
 .read<DashboardProvider>()
 .loadDashboard();
-});
+}
+
+Future<void> _openBookingScreen() async {
+await Navigator.push(
+context,
+MaterialPageRoute(
+builder: (_) => const BookingScreen(),
+),
+);
+
+if (!mounted) return;
+
+await _refreshDashboard();
+}
+
+Future<void> _openBookingDetails(
+    BookingModel booking,
+    ) async {
+final result = await Navigator.push<bool>(
+context,
+MaterialPageRoute(
+builder: (_) => BookingDetailsScreen(
+booking: booking,
+),
+),
+);
+
+if (!mounted) return;
+
+if (result == true) {
+await _refreshDashboard();
+}
+}
+
+void _showComingSoon(
+String message,
+) {
+ScaffoldMessenger.of(context).showSnackBar(
+SnackBar(
+content: Text(message),
+),
+);
 }
 
 @override
@@ -85,7 +132,7 @@ child: Text(
 )
 : RefreshIndicator(
 onRefresh:
-provider.refresh,
+_refreshDashboard,
 
 child: ListView(
 padding:
@@ -112,6 +159,10 @@ const SizedBox(
 height:
 AppSizes.md,
 ),
+// -------------------------------------------------------------------------
+// Statistics
+// -------------------------------------------------------------------------
+
 GridView.count(
 shrinkWrap: true,
 physics: const NeverScrollableScrollPhysics(),
@@ -159,6 +210,10 @@ color: Colors.red,
 
 const SizedBox(height: 24),
 
+// -------------------------------------------------------------------------
+// Quick Actions
+// -------------------------------------------------------------------------
+
 Text(
 'Quick Actions',
 style: Theme.of(context)
@@ -170,6 +225,10 @@ fontWeight: FontWeight.bold,
 ),
 
 const SizedBox(height: 12),
+// -------------------------------------------------------------------------
+// Quick Actions
+// -------------------------------------------------------------------------
+
 GridView.count(
 shrinkWrap: true,
 physics: const NeverScrollableScrollPhysics(),
@@ -182,71 +241,41 @@ QuickActionCard(
 title: 'New Booking',
 icon: Icons.add_circle,
 color: Colors.blue,
-onTap: () {
-Navigator.push(
-context,
-MaterialPageRoute(
-builder: (_) => const BookingScreen(),
-),
-).then((_) {
-if (mounted) {
-context.read<DashboardProvider>().loadDashboard();
-}
-});
-},
+onTap: _openBookingScreen,
 ),
 
 QuickActionCard(
 title: 'View Bookings',
 icon: Icons.book_online,
 color: Colors.green,
-onTap: () {
-Navigator.push(
-context,
-MaterialPageRoute(
-builder: (_) => const BookingScreen(),
-),
-).then((_) {
-if (mounted) {
-context.read<DashboardProvider>().loadDashboard();
-}
-});
-},
+onTap: _openBookingScreen,
 ),
 
 QuickActionCard(
 title: 'Reports',
 icon: Icons.bar_chart,
 color: Colors.orange,
-onTap: () {
-ScaffoldMessenger.of(context).showSnackBar(
-const SnackBar(
-content: Text(
+onTap: () => _showComingSoon(
 'Reports module will be available soon.',
 ),
-),
-);
-},
 ),
 
 QuickActionCard(
 title: 'Backup',
 icon: Icons.backup,
 color: Colors.deepPurple,
-onTap: () {
-ScaffoldMessenger.of(context).showSnackBar(
-const SnackBar(
-content: Text(
+onTap: () => _showComingSoon(
 'Backup & Restore module will be available soon.',
 ),
-),
-);
-},
 ),
 ],
 ),
 
 const SizedBox(height: 24),
+
+// -------------------------------------------------------------------------
+// Recent Bookings
+// -------------------------------------------------------------------------
 
 Text(
 'Recent Bookings',
@@ -259,6 +288,10 @@ fontWeight: FontWeight.bold,
 ),
 
 const SizedBox(height: 12),
+// -------------------------------------------------------------------------
+// Recent Bookings
+// -------------------------------------------------------------------------
+
 if (stats.recentBookings.isEmpty)
 const Card(
 child: Padding(
@@ -278,30 +311,16 @@ ListView.separated(
 shrinkWrap: true,
 physics: const NeverScrollableScrollPhysics(),
 itemCount: stats.recentBookings.length,
-separatorBuilder: (_, __) => const SizedBox(height: 8),
+separatorBuilder: (_, _) =>
+const SizedBox(height: 8),
 itemBuilder: (context, index) {
 final booking = stats.recentBookings[index];
 
 return RecentBookingTile(
 booking: booking,
-onTap: () async {
-final result = await Navigator.push<bool>(
-context,
-MaterialPageRoute(
-builder: (_) => BookingDetailsScreen(
-booking: booking,
+onTap: () => _openBookingDetails(
+booking,
 ),
-),
-);
-
-if (!mounted) return;
-
-if (result == true) {
-await context
-.read<DashboardProvider>()
-.loadDashboard();
-}
-},
 );
 },
 ),
@@ -312,22 +331,11 @@ const SizedBox(height: 24),
 ),
 
   floatingActionButton: FloatingActionButton.extended(
-    onPressed: () async {
-      await Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (_) => const BookingScreen(),
-        ),
-      );
-
-      if (!mounted) return;
-
-      await context
-          .read<DashboardProvider>()
-          .loadDashboard();
-    },
+    onPressed: _openBookingScreen,
     icon: const Icon(Icons.add),
-    label: const Text('New Booking'),
+    label: const Text(
+      'New Booking',
+    ),
   ),
 );
 },
