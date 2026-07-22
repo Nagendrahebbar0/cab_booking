@@ -7,9 +7,10 @@
 
 import 'package:flutter/material.dart';
 
-import '../../core/constants/app_sizes.dart';
-import '../../core/constants/app_strings.dart';
-import '../../shared/drawer/app_drawer.dart';
+import '../../../core/constants/app_sizes.dart';
+import '../../../core/constants/app_strings.dart';
+import '../../../shared/drawer/app_drawer.dart';
+import '../booking/screens/booking_screen.dart';
 
 /// Dashboard screen.
 class DashboardScreen extends StatelessWidget {
@@ -74,7 +75,13 @@ class DashboardScreen extends StatelessWidget {
         ],
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
+        onPressed: () {
+          Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (_) => const BookingScreen(),
+            ),
+          );
+        },
         child: const Icon(Icons.add),
       ),
     );

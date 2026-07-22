@@ -15,19 +15,19 @@ dependencies:
   cupertino_icons: ^1.0.8
 
   # State Management
-  provider: ^6.1.5
-
-  # Navigation
-  go_router: ^16.0.0
+  provider: ^6.1.5+1
 
   # Date & Time Formatting
-  intl: ^0.20.2
+  intl: ^0.20.3
 
-  # Toast Messages
-  fluttertoast: ^8.2.12
+  # Local Database
+  sqflite: ^2.4.2
+  path: ^1.9.1
+  path_provider: ^2.1.5
+  flutter_launcher_icons: ^0.14.4
 
-  # Local App Settings
-  shared_preferences: ^2.5.3
+  # Local Settings (will be removed later if no longer required)
+  shared_preferences: ^2.5.5
 
 dev_dependencies:
   flutter_test:
@@ -41,3 +41,9 @@ flutter:
   assets:
     - assets/images/
     - assets/icons/
+flutter_launcher_icons:
+  android: true
+  ios: true
+  image_path: "assets/icons/cab.png"
+  min_sdk_android: 21
+  remove_alpha_ios: true

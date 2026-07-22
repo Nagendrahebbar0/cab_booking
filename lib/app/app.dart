@@ -5,6 +5,7 @@
 // Root application widget.
 //
 // Responsibilities:
+// • Configure providers.
 // • Configure the MaterialApp.
 // • Apply the application theme.
 // • Configure application title.
@@ -15,9 +16,11 @@
 // *****************************************************************************
 
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
-import 'app_theme.dart';
+import '../features/booking/provider/booking_provider.dart';
 import '../features/dashboard/dashboard_screen.dart';
+import 'app_theme.dart';
 
 /// Root widget of the Cab Booking Manager application.
 class CabBookingManagerApp extends StatelessWidget {
@@ -26,11 +29,14 @@ class CabBookingManagerApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Cab Booking Manager',
-      debugShowCheckedModeBanner: false,
-      theme: AppTheme.lightTheme,
-      home: const DashboardScreen(),
+    return ChangeNotifierProvider(
+      create: (_) => BookingProvider(),
+      child: MaterialApp(
+        title: 'Cab Booking Manager',
+        debugShowCheckedModeBanner: false,
+        theme: AppTheme.lightTheme,
+        home: const DashboardScreen(),
+      ),
     );
   }
 }
