@@ -50,7 +50,7 @@ class DashboardStatCard extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             CircleAvatar(
-              radius: 24,
+              radius: 22,
               backgroundColor: color.withValues(alpha: 0.15),
               child: Icon(
                 icon,
@@ -59,7 +59,7 @@ class DashboardStatCard extends StatelessWidget {
               ),
             ),
 
-            const SizedBox(height: 16),
+            const SizedBox(height: 10),
 
             Text(
               value.toString(),
@@ -68,11 +68,13 @@ class DashboardStatCard extends StatelessWidget {
               ),
             ),
 
-            const SizedBox(height: 8),
+            const SizedBox(height: 4),
 
             Text(
               title,
               textAlign: TextAlign.center,
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
               style: theme.textTheme.bodyMedium,
             ),
           ],

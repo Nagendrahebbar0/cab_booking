@@ -19,18 +19,46 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../features/booking/provider/booking_provider.dart';
+import '../features/booking/repository/booking_repository.dart';
+
 import '../features/dashboard/dashboard_screen.dart';
+import '../features/dashboard/provider/dashboard_provider.dart';
+import '../features/dashboard/repository/dashboard_repository.dart';
+
 import 'app_theme.dart';
 
 /// Root widget of the Cab Booking Manager application.
 class CabBookingManagerApp extends StatelessWidget {
   /// Creates the root application widget.
-  const CabBookingManagerApp({super.key});
+  const CabBookingManagerApp({
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (_) => BookingProvider(),
+    return MultiProvider(
+      providers: [
+        //----------------------------------------------------------------------
+        // Booking Provider
+        //----------------------------------------------------------------------
+
+        ChangeNotifierProvider<BookingProvider>(
+          create: (_) => BookingProvider(),
+        ),
+
+        //----------------------------------------------------------------------
+        // Dashboard Provider
+        //----------------------------------------------------------------------
+
+        ChangeNotifierProvider<DashboardProvider>(
+          create: (_) => DashboardProvider(
+            dashboardRepository: DashboardRepository(
+              bookingRepository: BookingRepository.instance,
+            ),
+          ),
+        ),
+      ],
+
       child: MaterialApp(
         title: 'Cab Booking Manager',
         debugShowCheckedModeBanner: false,

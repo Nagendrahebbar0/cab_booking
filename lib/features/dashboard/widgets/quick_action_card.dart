@@ -49,14 +49,14 @@ class QuickActionCard extends StatelessWidget {
         onTap: onTap,
         child: Padding(
           padding: const EdgeInsets.symmetric(
-            vertical: 20,
+            vertical: 12,
             horizontal: 16,
           ),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               CircleAvatar(
-                radius: 24,
+                radius: 22,
                 backgroundColor: color.withValues(alpha: 0.15),
                 child: Icon(
                   icon,
@@ -65,7 +65,7 @@ class QuickActionCard extends StatelessWidget {
                 ),
               ),
 
-              const SizedBox(height: 12),
+              const SizedBox(height: 8),
 
               Text(
                 title,

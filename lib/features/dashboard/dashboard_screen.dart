@@ -169,7 +169,7 @@ physics: const NeverScrollableScrollPhysics(),
 crossAxisCount: 2,
 mainAxisSpacing: 12,
 crossAxisSpacing: 12,
-childAspectRatio: 1.15,
+childAspectRatio: 0.90,
 children: [
 DashboardStatCard(
 title: "Today's Bookings",
@@ -235,7 +235,7 @@ physics: const NeverScrollableScrollPhysics(),
 crossAxisCount: 2,
 mainAxisSpacing: 12,
 crossAxisSpacing: 12,
-childAspectRatio: 1.25,
+childAspectRatio: 0.95,
 children: [
 QuickActionCard(
 title: 'New Booking',
